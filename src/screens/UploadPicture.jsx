@@ -51,7 +51,7 @@ const requestStoragePermission = async () => {
   }
 };
 
-const UploadPhotoScreen = () => {
+const UploadPicture = () => {
   const [imageUri, setImageUri] = useState(null);
   const [uploading, setUploading] = useState(false);
 
@@ -178,4 +178,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UploadPhotoScreen;
+export default UploadPicture;
