@@ -1,12 +1,42 @@
 import React, {useState} from 'react';
 import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
-import {Picker} from '@react-native-picker/picker'; // Import the Picker component
+import {Picker} from '@react-native-picker/picker';
 
 const CalculatorScreen = () => {
   const [num1, setNum1] = useState('');
   const [num2, setNum2] = useState('');
-  const [operation, setOperation] = useState('add'); // Default to 'add' operation
+  const [operation, setOperation] = useState('add');
   const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
+
+  const handleCalculate = async () => {
+    try {
+      const response = await fetch(
+        'https://protected-meadow-83300-b69177c24bf9.herokuapp.com/calculate',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            num1: parseFloat(num1),
+            num2: parseFloat(num2),
+            operation: operation,
+          }),
+        },
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        setResult(data.result); // Update with the result from the API
+        setError('');
+      } else {
+        setError(data.error || 'Error performing calculation');
+      }
+    } catch (err) {
+      setError('Error connecting to API');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -36,9 +66,10 @@ const CalculatorScreen = () => {
         <Picker.Item label="Multiplication" value="multiply" />
       </Picker>
 
-      <Button title="Calculate" onPress={() => {}} />
+      <Button title="Calculate" onPress={handleCalculate} />
 
       {result !== null && <Text style={styles.result}>Result: {result}</Text>}
+      {error !== '' && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 };
@@ -69,6 +100,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  error: {
+    marginTop: 20,
+    color: 'red',
+    fontSize: 18,
   },
 });
 
