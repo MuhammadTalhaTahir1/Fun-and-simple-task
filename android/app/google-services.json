@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "499092324314",
+    "project_id": "fexitask",
+    "storage_bucket": "fexitask.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499092324314:android:4c301a450c512de1580ae3",
+        "android_client_info": {
+          "package_name": "com.flexitask"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBB_t4_j237GUaIJ3ZrGd9bFBtEicGBtnI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
