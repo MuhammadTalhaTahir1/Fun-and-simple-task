@@ -16,9 +16,31 @@ import FontSize from '../../../constants/FontSize';
 import Spacing from '../../../constants/Spacing';
 import Font from '../../../constants/Font';
 import Colors from '../../../constants/Colors';
+import axios from 'axios';
+
 const {height, width} = Dimensions.get('window');
 
 const SignupScreen = ({navigation}) => {
+  const validateEmailWithKickbox = async email => {
+    const API_KEY =
+      'live_a754bdc55b68e1f7251f8fa51ea5ae278bb90d15ccfd0e6d79ab6b4430b91b2c'; // Replace with your actual API key
+    const url = `https://api.kickbox.com/v2/verify?email=${email}&apikey=${API_KEY}`;
+
+    try {
+      const response = await axios.get(url);
+      const {result, reason} = response.data;
+
+      // Check if the email is valid and not temporary
+      if (result === 'deliverable' && reason !== 'disposable') {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('Email validation error:', error);
+      return false;
+    }
+  };
   // Password validation errors are combined in Yup object
   const SignupSchema = Yup.object().shape({
     name: Yup.string().required('Full Name is required'),
@@ -37,6 +59,12 @@ const SignupScreen = ({navigation}) => {
 
   const handleSignup = async values => {
     const {email, password} = values;
+    // Validate email with Kickbox API
+    const isValidEmail = await validateEmailWithKickbox(email);
+    if (!isValidEmail) {
+      alert('Please provide a valid and non-temporary email address');
+      return; // Stop signup process if email is invalid
+    }
     try {
       // Create a new user with email and password
       await firebase.auth().createUserWithEmailAndPassword(email, password);

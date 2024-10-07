@@ -8,6 +8,7 @@ import {firebase} from '@react-native-firebase/auth';
 import TabNavigator from './TabNavigator';
 import LoadingScreen from '../src/screens/onBoarding/LoadingScreen';
 import WelcomeScreen from '../src/screens/onBoarding/WelcomeScreen';
+import Home from '../src/screens/Home';
 
 const Stack = createNativeStackNavigator();
 
