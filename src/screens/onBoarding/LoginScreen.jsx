@@ -4,21 +4,24 @@ import {
   StyleSheet,
   SafeAreaView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   Dimensions,
+  Alert,
 } from 'react-native';
 import FontSize from '../../../constants/FontSize';
 import Spacing from '../../../constants/Spacing';
 import Font from '../../../constants/Font';
 import AppTextInput from '../../components/AppTextInput';
 import Colors from '../../../constants/Colors';
+
 const {height, width} = Dimensions.get('window');
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isForgotPassword, setIsForgotPassword] = useState(false); // Forgot password state
+  const [forgotEmail, setForgotEmail] = useState(''); // Forgot email state
 
   const handleLogin = async () => {
     try {
@@ -35,7 +38,38 @@ const LoginScreen = ({navigation}) => {
       Alert.alert('Login Error', error.message);
     }
   };
-  console.log('Login Screen');
+  const handleForgotPassword = async () => {
+    // Simple regex to validate email format
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!forgotEmail || !emailPattern.test(forgotEmail)) {
+      Alert.alert('Error', 'Please enter a valid email address.');
+      return;
+    }
+
+    try {
+      // If sign-in is successful, send the password reset email
+      await firebase
+        .auth()
+        .sendPasswordResetEmail(forgotEmail)
+        .then(() => {
+          Alert.alert(
+            'Check Your Email',
+            'A password reset link has been sent to your email if it is associated with an account.',
+          );
+          setIsForgotPassword(false); // Go back to login after success
+        });
+    } catch (error) {
+      // Handle errors here
+      if (error.code === 'auth/user-not-found') {
+        Alert.alert('Error', 'No user found with this email address.');
+      } else {
+        console.error('Forgot Password Error:', error.message);
+        Alert.alert('Error', 'An error occurred. Please try again later.');
+      }
+    }
+  };
+
   return (
     <SafeAreaView>
       <View
@@ -53,7 +87,7 @@ const LoginScreen = ({navigation}) => {
               fontFamily: Font['poppins-bold'],
               marginVertical: Spacing * 3,
             }}>
-            Login here
+            {isForgotPassword ? 'Reset Password' : 'Login here'}
           </Text>
           <Text
             style={{
@@ -62,125 +96,119 @@ const LoginScreen = ({navigation}) => {
               maxWidth: '60%',
               textAlign: 'center',
             }}>
-            Welcome back you've been missed!
+            {isForgotPassword
+              ? 'Enter your email to reset your password.'
+              : "Welcome back, you've been missed!"}
           </Text>
         </View>
 
-        <View
-          style={{
-            marginVertical: Spacing * 3,
-          }}>
-          <AppTextInput
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-          />
-          <AppTextInput
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </View>
-        <View>
-          <Text
-            style={{
-              fontFamily: Font['poppins-semiBold'],
-              fontSize: FontSize.small,
-              color: Colors.primary,
-              alignSelf: 'flex-end',
-            }}>
-            Forgot your password ?
-          </Text>
-        </View>
-        <TouchableOpacity
-          onPress={handleLogin}
-          style={{
-            padding: Spacing * 2,
-            backgroundColor: Colors.primary,
-            marginVertical: Spacing * 3,
-            borderRadius: Spacing,
-            shadowColor: Colors.primary,
-            shadowOffset: {
-              width: 0,
-              height: Spacing,
-            },
-            shadowOpacity: 0.3,
-            shadowRadius: Spacing,
-          }}>
-          <Text
-            style={{
-              fontFamily: Font['poppins-bold'],
-              color: Colors.onPrimary,
-              textAlign: 'center',
-              fontSize: FontSize.large,
-            }}>
-            Sign in
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Signup')}
-          style={{
-            padding: Spacing,
-          }}>
-          <Text
-            style={{
-              fontFamily: Font['poppins-semiBold'],
-              color: Colors.text,
-              textAlign: 'center',
-              fontSize: FontSize.small,
-            }}>
-            Create new account
-          </Text>
-        </TouchableOpacity>
+        {isForgotPassword ? (
+          <View style={{marginVertical: Spacing * 3}}>
+            <AppTextInput
+              placeholder="Enter your email"
+              value={forgotEmail}
+              onChangeText={setForgotEmail}
+            />
+            <TouchableOpacity
+              onPress={handleForgotPassword}
+              style={{
+                padding: Spacing * 2,
+                backgroundColor: Colors.primary,
+                marginVertical: Spacing * 3,
+                borderRadius: Spacing,
+              }}>
+              <Text
+                style={{
+                  fontFamily: Font['poppins-bold'],
+                  color: Colors.onPrimary,
+                  textAlign: 'center',
+                  fontSize: FontSize.large,
+                }}>
+                Reset Password
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setIsForgotPassword(false)} // Go back to login
+              style={{
+                padding: Spacing,
+              }}>
+              <Text
+                style={{
+                  fontFamily: Font['poppins-semiBold'],
+                  color: Colors.text,
+                  textAlign: 'center',
+                  fontSize: FontSize.small,
+                }}>
+                Back to Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={{marginVertical: Spacing * 3}}>
+            <AppTextInput
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+            />
+            <AppTextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+
+            <TouchableOpacity onPress={() => setIsForgotPassword(true)}>
+              <Text
+                style={{
+                  fontFamily: Font['poppins-semiBold'],
+                  fontSize: FontSize.small,
+                  color: Colors.primary,
+                  alignSelf: 'flex-end',
+                }}>
+                Forgot your password ?
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleLogin}
+              style={{
+                padding: Spacing * 2,
+                backgroundColor: Colors.primary,
+                marginVertical: Spacing * 3,
+                borderRadius: Spacing,
+              }}>
+              <Text
+                style={{
+                  fontFamily: Font['poppins-bold'],
+                  color: Colors.onPrimary,
+                  textAlign: 'center',
+                  fontSize: FontSize.large,
+                }}>
+                Sign in
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Signup')}
+              style={{
+                padding: Spacing,
+              }}>
+              <Text
+                style={{
+                  fontFamily: Font['poppins-semiBold'],
+                  color: Colors.text,
+                  textAlign: 'center',
+                  fontSize: FontSize.small,
+                }}>
+                Create new account
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
 };
 
 export default LoginScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    padding: 20,
-    justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
-  input: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: '#ccc',
-  },
-  button: {
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  signUpText: {
-    color: '#555',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  signUpLink: {
-    color: '#4CAF50',
-    fontWeight: 'bold',
-  },
-});
