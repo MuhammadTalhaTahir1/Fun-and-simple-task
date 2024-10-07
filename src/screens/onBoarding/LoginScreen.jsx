@@ -24,6 +24,11 @@ const LoginScreen = ({navigation}) => {
   const [forgotEmail, setForgotEmail] = useState(''); // Forgot email state
 
   const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert('Error', 'Please enter both email and password.');
+      return; // Exit the function if validation fails
+    }
+
     try {
       // Sign in the user with email and password
       await firebase.auth().signInWithEmailAndPassword(email, password);
