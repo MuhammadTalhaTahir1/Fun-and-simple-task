@@ -1,13 +1,20 @@
 import {firebase} from '@react-native-firebase/auth';
 import React, {useState} from 'react';
 import {
-  View,
+  StyleSheet,
+  SafeAreaView,
+  Text,
   TextInput,
   TouchableOpacity,
-  Text,
-  ScrollView,
-  StyleSheet,
+  View,
+  Dimensions,
 } from 'react-native';
+import FontSize from '../../../constants/FontSize';
+import Spacing from '../../../constants/Spacing';
+import Font from '../../../constants/Font';
+import AppTextInput from '../../components/AppTextInput';
+import Colors from '../../../constants/Colors';
+const {height, width} = Dimensions.get('window');
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -30,36 +37,104 @@ const LoginScreen = ({navigation}) => {
   };
   console.log('Login Screen');
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        autoCapitalize="none"
-      />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <Text style={styles.signUpText}>
-        Don't have an account?{' '}
-        <Text
-          style={styles.signUpLink}
-          onPress={() => navigation.navigate('Signup')}>
-          Sign Up
-        </Text>
-      </Text>
-    </ScrollView>
+    <SafeAreaView>
+      <View
+        style={{
+          padding: Spacing * 2,
+        }}>
+        <View
+          style={{
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontSize: FontSize.xLarge,
+              color: Colors.primary,
+              fontFamily: Font['poppins-bold'],
+              marginVertical: Spacing * 3,
+            }}>
+            Login here
+          </Text>
+          <Text
+            style={{
+              fontFamily: Font['poppins-semiBold'],
+              fontSize: FontSize.large,
+              maxWidth: '60%',
+              textAlign: 'center',
+            }}>
+            Welcome back you've been missed!
+          </Text>
+        </View>
+
+        <View
+          style={{
+            marginVertical: Spacing * 3,
+          }}>
+          <AppTextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <AppTextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+        </View>
+        <View>
+          <Text
+            style={{
+              fontFamily: Font['poppins-semiBold'],
+              fontSize: FontSize.small,
+              color: Colors.primary,
+              alignSelf: 'flex-end',
+            }}>
+            Forgot your password ?
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={handleLogin}
+          style={{
+            padding: Spacing * 2,
+            backgroundColor: Colors.primary,
+            marginVertical: Spacing * 3,
+            borderRadius: Spacing,
+            shadowColor: Colors.primary,
+            shadowOffset: {
+              width: 0,
+              height: Spacing,
+            },
+            shadowOpacity: 0.3,
+            shadowRadius: Spacing,
+          }}>
+          <Text
+            style={{
+              fontFamily: Font['poppins-bold'],
+              color: Colors.onPrimary,
+              textAlign: 'center',
+              fontSize: FontSize.large,
+            }}>
+            Sign in
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Signup')}
+          style={{
+            padding: Spacing,
+          }}>
+          <Text
+            style={{
+              fontFamily: Font['poppins-semiBold'],
+              color: Colors.text,
+              textAlign: 'center',
+              fontSize: FontSize.small,
+            }}>
+            Create new account
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 

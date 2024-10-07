@@ -7,6 +7,7 @@ import SignupScreen from '../src/screens/onBoarding/SignupScreen';
 import {firebase} from '@react-native-firebase/auth';
 import TabNavigator from './TabNavigator';
 import LoadingScreen from '../src/screens/onBoarding/LoadingScreen';
+import WelcomeScreen from '../src/screens/onBoarding/WelcomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,16 +29,20 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Loading" component={LoadingScreen} />
+        <Stack.Screen name="Loading" component={WelcomeScreen} />
 
-        {user ? (
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+        {/* <Stack.Screen name="Loading" component={LoadingScreen} /> */}
+
+        {/* {user ? (
           <Stack.Screen name="HomeTabs" component={TabNavigator} />
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Signup" component={SignupScreen} />
           </>
-        )}
+        )} */}
       </Stack.Navigator>
     </NavigationContainer>
   );
