@@ -5,6 +5,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json()); // Middleware to parse JSON bodies
 
 app.post('/calculate', (req, res) => {
+  console.log(req.body); // Log the incoming request body
   const {num1, num2, operation} = req.body;
 
   if (isNaN(num1) || isNaN(num2)) {

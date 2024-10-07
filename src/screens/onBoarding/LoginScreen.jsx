@@ -19,7 +19,7 @@ const LoginScreen = ({navigation}) => {
       await firebase.auth().signInWithEmailAndPassword(email, password);
 
       // Navigate to the home screen on successful login
-      navigation.navigate('Home'); // Adjust the route name as needed
+      navigation.replace('HomeTabs'); // Adjust the route name as needed
     } catch (error) {
       // Handle any errors here
       console.error('Login error:', error.message);
@@ -28,7 +28,7 @@ const LoginScreen = ({navigation}) => {
       Alert.alert('Login Error', error.message);
     }
   };
-
+  console.log('Login Screen');
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Login</Text>

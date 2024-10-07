@@ -4,6 +4,7 @@ import React, {useEffect} from 'react';
 import {View, ActivityIndicator, StyleSheet} from 'react-native';
 
 const LoadingScreen = ({navigation}) => {
+  console.log('Loading Screen ');
   useEffect(() => {
     const checkUser = firebase.auth().onAuthStateChanged(user => {
       if (user) {

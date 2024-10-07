@@ -2662,6 +2662,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@notifee/react-native@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "@notifee/react-native@npm:9.1.0"
+  peerDependencies:
+    react-native: "*"
+  checksum: 4fc878d6a9037b2737b2ddaf24dc1dc1049ace81796e3d6608a265304a57d4b79e6e45f914c0727d02e35153168d985486faae6beb3d8df2b95abcfbde090c3b
+  languageName: node
+  linkType: hard
+
 "@npmcli/agent@npm:^2.0.0":
   version: 2.2.2
   resolution: "@npmcli/agent@npm:2.2.2"
@@ -3790,6 +3799,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@notifee/react-native": ^9.1.0
     "@react-native-firebase/app": ^21.0.0
     "@react-native-firebase/auth": ^21.0.0
     "@react-native-firebase/firestore": ^21.0.0

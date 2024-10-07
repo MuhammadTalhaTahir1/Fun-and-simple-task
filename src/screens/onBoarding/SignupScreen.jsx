@@ -33,8 +33,8 @@ const SignupScreen = ({navigation}) => {
       // Create a new user with email and password
       await firebase.auth().createUserWithEmailAndPassword(email, password);
 
-      // Navigate to the Login screen after successful signup
-      navigation.navigate('Login');
+      // Navigate to the HomeTabs screen after successful signup
+      navigation.replace('HomeTabs');
     } catch (error) {
       // Handle any errors here
       console.error('Signup error:', error.message);
@@ -43,6 +43,7 @@ const SignupScreen = ({navigation}) => {
       alert(error.message); // Simple alert to show error messages
     }
   };
+  console.log('SignUp Screen');
 
   return (
     <Formik
