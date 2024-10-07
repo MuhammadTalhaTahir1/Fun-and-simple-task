@@ -17,13 +17,12 @@ import Spacing from '../../../constants/Spacing';
 import Font from '../../../constants/Font';
 import Colors from '../../../constants/Colors';
 import axios from 'axios';
-
+import {KICKBOX_API_KEY} from '../../../config/config';
 const {height, width} = Dimensions.get('window');
 
 const SignupScreen = ({navigation}) => {
   const validateEmailWithKickbox = async email => {
-    const API_KEY =
-      'live_a754bdc55b68e1f7251f8fa51ea5ae278bb90d15ccfd0e6d79ab6b4430b91b2c'; // Replace with your actual API key
+    const API_KEY = KICKBOX_API_KEY;
     const url = `https://api.kickbox.com/v2/verify?email=${email}&apikey=${API_KEY}`;
 
     try {
