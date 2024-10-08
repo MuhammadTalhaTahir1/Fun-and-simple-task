@@ -3,7 +3,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-
+app.get('/', (req, res) => {
+    res.send('Welcome to the Calculator API!');
+  });
 app.post('/calculate', (req, res) => {
   const { num1, num2, operation } = req.body;
 

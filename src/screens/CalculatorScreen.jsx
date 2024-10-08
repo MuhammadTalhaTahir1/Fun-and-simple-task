@@ -11,7 +11,7 @@ const CalculatorScreen = () => {
 
   const handleCalculate = async () => {
     try {
-      const response = await fetch('https://your-heroku-api-url/calculate', {
+      const response = await fetch('https://peaceful-harbor-69270.herokuapp.com/calculate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
