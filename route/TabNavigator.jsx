@@ -1,10 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../src/screens/Home';
 import UploadPicture from '../src/screens/UploadPicture';
 import TextScreen from '../src/screens/TextScreen';
 import CalculatorScreen from '../src/screens/CalculatorScreen';
+import Icon from 'react-native-vector-icons/FontAwesome'; // Import the icon library
 
 const Tab = createBottomTabNavigator();
 
@@ -27,9 +28,11 @@ const TabNavigator = () => {
                 styles.iconContainer,
                 focused ? styles.activeBackground : null,
               ]}>
-              <Text style={focused ? styles.textActive : styles.textInactive}>
-                🏠
-              </Text>
+              <Icon
+                name="home"
+                size={20}
+                color={focused ? '#007AFF' : '#8e8e93'}
+              />
             </View>
           ),
         }}
@@ -44,9 +47,11 @@ const TabNavigator = () => {
                 styles.iconContainer,
                 focused ? styles.activeBackground : null,
               ]}>
-              <Text style={focused ? styles.textActive : styles.textInactive}>
-                📷
-              </Text>
+              <Icon
+                name="camera"
+                size={20}
+                color={focused ? '#007AFF' : '#8e8e93'}
+              />
             </View>
           ),
         }}
@@ -61,9 +66,11 @@ const TabNavigator = () => {
                 styles.iconContainer,
                 focused ? styles.activeBackground : null,
               ]}>
-              <Text style={focused ? styles.textActive : styles.textInactive}>
-                ✍️
-              </Text>
+              <Icon
+                name="pencil"
+                size={20}
+                color={focused ? '#007AFF' : '#8e8e93'}
+              />
             </View>
           ),
         }}
@@ -78,9 +85,11 @@ const TabNavigator = () => {
                 styles.iconContainer,
                 focused ? styles.activeBackground : null,
               ]}>
-              <Text style={focused ? styles.textActive : styles.textInactive}>
-                ✍️
-              </Text>
+              <Icon
+                name="calculator"
+                size={20}
+                color={focused ? '#007AFF' : '#8e8e93'}
+              />
             </View>
           ),
         }}
@@ -114,14 +123,6 @@ const styles = StyleSheet.create({
     borderRadius: 20, // Makes sure the background is rounded for each icon
   },
   activeBackground: {
-    backgroundColor: '#1F41BB', // Change this color for the active background
-  },
-  textActive: {
-    fontSize: 18,
-    color: '#007AFF',
-  },
-  textInactive: {
-    fontSize: 16,
-    color: '#8e8e93',
+    backgroundColor: '#f1f4ff', // Change this color for the active background
   },
 });

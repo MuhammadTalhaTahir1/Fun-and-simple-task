@@ -1,6 +1,18 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button, Text, StyleSheet} from 'react-native';
+import {
+  View,
+  TextInput,
+  Button,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import AppTextInput from '../components/AppTextInput';
+import Colors from '../../constants/Colors';
+import Spacing from '../../constants/Spacing';
+import FontSize from '../../constants/FontSize';
+import Font from '../../constants/Font';
 
 const CalculatorScreen = () => {
   const [num1, setNum1] = useState('');
@@ -11,17 +23,20 @@ const CalculatorScreen = () => {
 
   const handleCalculate = async () => {
     try {
-      const response = await fetch('https://peaceful-harbor-69270-b20b7c4c3c9b.herokuapp.com/calculate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        'https://peaceful-harbor-69270-b20b7c4c3c9b.herokuapp.com/calculate',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            num1: parseFloat(num1),
+            num2: parseFloat(num2),
+            operation: operation,
+          }),
         },
-        body: JSON.stringify({
-          num1: parseFloat(num1),
-          num2: parseFloat(num2),
-          operation: operation,
-        }),
-      });
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -38,19 +53,19 @@ const CalculatorScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Enter First Number:</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
+
+      <AppTextInput
         value={num1}
         onChangeText={setNum1}
+        keyboardType="numeric"
       />
 
       <Text style={styles.label}>Enter Second Number:</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="numeric"
+
+      <AppTextInput
         value={num2}
         onChangeText={setNum2}
+        keyboardType="numeric"
       />
 
       <Text style={styles.label}>Choose Operation:</Text>
@@ -63,7 +78,24 @@ const CalculatorScreen = () => {
         <Picker.Item label="Multiplication" value="multiply" />
       </Picker>
 
-      <Button title="Calculate" onPress={handleCalculate} />
+      <TouchableOpacity
+        onPress={handleCalculate}
+        style={{
+          padding: Spacing * 2,
+          backgroundColor: Colors.primary,
+          marginVertical: Spacing * 3,
+          borderRadius: Spacing,
+        }}>
+        <Text
+          style={{
+            fontFamily: Font['poppins-bold'],
+            color: Colors.onPrimary,
+            textAlign: 'center',
+            fontSize: FontSize.large,
+          }}>
+          CALCULATE
+        </Text>
+      </TouchableOpacity>
 
       {result !== null && <Text style={styles.result}>Result: {result}</Text>}
       {error !== '' && <Text style={styles.error}>{error}</Text>}
@@ -75,7 +107,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
+    marginTop: 30,
+    // justifyContent: 'center',
   },
   label: {
     fontSize: 18,

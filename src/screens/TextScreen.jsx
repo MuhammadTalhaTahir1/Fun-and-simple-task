@@ -7,9 +7,15 @@ import {
   Text,
   StyleSheet,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import AppTextInput from '../components/AppTextInput';
+import Colors from '../../constants/Colors';
+import Spacing from '../../constants/Spacing';
+import Font from '../../constants/Font';
+import FontSize from '../../constants/FontSize';
 
 const TextScreen = () => {
   const [textInput, setTextInput] = useState('');
@@ -70,14 +76,6 @@ const TextScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={textInput}
-        onChangeText={setTextInput}
-        placeholder="Type your message here..."
-        maxLength={200} // Optional message length limit
-      />
-      <Button title="Send" onPress={sendMessage} />
       <FlatList
         data={messages}
         keyExtractor={item => item.id}
@@ -89,6 +87,35 @@ const TextScreen = () => {
             </Text>
           </View>
         )}
+        contentContainerStyle={styles.flatListContent}
+        ListHeaderComponent={
+          <View style={styles.inputContainer}>
+            <AppTextInput
+              value={textInput}
+              onChangeText={setTextInput}
+              placeholder="Type your message here..."
+              maxLength={200} // Optional message length limit
+            />
+            <TouchableOpacity
+              onPress={sendMessage}
+              style={{
+                padding: Spacing * 2,
+                backgroundColor: Colors.primary,
+                marginVertical: Spacing * 3,
+                borderRadius: Spacing,
+              }}>
+              <Text
+                style={{
+                  fontFamily: Font['poppins-bold'],
+                  color: Colors.onPrimary,
+                  textAlign: 'center',
+                  fontSize: FontSize.large,
+                }}>
+                Send
+              </Text>
+            </TouchableOpacity>
+          </View>
+        }
       />
     </View>
   );
@@ -99,11 +126,15 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  inputContainer: {
+    paddingBottom: 10, // Add padding below the input area
+  },
   input: {
     borderColor: '#ccc',
     borderWidth: 1,
     padding: 8,
     marginBottom: 8,
+    borderRadius: 5,
   },
   messageContainer: {
     padding: 10,
@@ -117,6 +148,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#888',
     marginTop: 4,
+  },
+  flatListContent: {
+    paddingBottom: 100, // Add extra space at the bottom
   },
 });
 

@@ -36,7 +36,7 @@ const Notification = () => {
         onPress={onDisplayNotification}
         style={{
           padding: Spacing * 2,
-          backgroundColor: Colors.primary,
+          backgroundColor: '#c30010',
           marginVertical: Spacing * 3,
           borderRadius: Spacing,
           shadowColor: Colors.primary,

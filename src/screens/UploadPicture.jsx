@@ -8,9 +8,14 @@ import {
   Text,
   PermissionsAndroid,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import Spacing from '../../constants/Spacing';
+import Colors from '../../constants/Colors';
+import FontSize from '../../constants/FontSize';
+import Font from '../../constants/Font';
 
 // Function to request camera permission
 const requestCameraPermission = async () => {
@@ -155,17 +160,47 @@ const UploadPicture = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{marginBottom: 10}}>
-        <Button
+      {/* <Button
           title={imageUri ? 'Replace using Gallery' : 'Select from Gallery'}
           onPress={selectImageFromGallery}
-        />
-      </View>
+        /> */}
 
-      <Button
-        title={imageUri ? 'Replace via Camera' : 'Take Photo'}
+      <TouchableOpacity
+        onPress={selectImageFromGallery}
+        style={{
+          padding: Spacing * 2,
+          backgroundColor: Colors.primary,
+          marginVertical: Spacing * 3,
+          borderRadius: Spacing,
+        }}>
+        <Text
+          style={{
+            fontFamily: Font['poppins-bold'],
+            color: Colors.onPrimary,
+            textAlign: 'center',
+            fontSize: FontSize.large,
+          }}>
+          {imageUri ? 'Replace using Gallery' : 'Select from Gallery'}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={takePhotoWithCamera}
-      />
+        style={{
+          padding: Spacing * 2,
+          backgroundColor: Colors.primary,
+          marginVertical: Spacing * 3,
+          borderRadius: Spacing,
+        }}>
+        <Text
+          style={{
+            fontFamily: Font['poppins-bold'],
+            color: Colors.onPrimary,
+            textAlign: 'center',
+            fontSize: FontSize.large,
+          }}>
+          {imageUri ? 'Replace via Camera' : 'Take Photo'}
+        </Text>
+      </TouchableOpacity>
 
       {uploading && <ActivityIndicator size="medium" color="#1F41BB" />}
       {uploading && <Text>Uploading...</Text>}
@@ -185,7 +220,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   image: {
     width: 300,
