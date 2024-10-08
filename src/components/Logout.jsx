@@ -1,13 +1,13 @@
-// LogoutButton.jsx
+// CustomHeader.jsx
 import React from 'react';
-import {View, Button, Alert} from 'react-native';
+import {View, Text, Button, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
-const Logout = ({navigation}) => {
+
+const Logout = ({title, navigation}) => {
   const handleLogout = async () => {
     try {
       await auth().signOut();
       console.log('User logged out successfully');
-      // Navigate to login screen
       navigation.replace('Login');
       alert('Logout Successfully!');
     } catch (error) {
@@ -17,10 +17,26 @@ const Logout = ({navigation}) => {
   };
 
   return (
-    <View style={{marginRight: 20}}>
+    <View style={styles.header}>
+      <Text style={styles.title}>{title}</Text>
       <Button title="Logout" onPress={handleLogout} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
+    elevation: 2, // Add shadow
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
 
 export default Logout;

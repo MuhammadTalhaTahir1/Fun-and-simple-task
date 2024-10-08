@@ -11,24 +11,21 @@ const CalculatorScreen = () => {
 
   const handleCalculate = async () => {
     try {
-      const response = await fetch(
-        'https://protected-meadow-83300-b69177c24bf9.herokuapp.com/calculate',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            num1: parseFloat(num1),
-            num2: parseFloat(num2),
-            operation: operation,
-          }),
+      const response = await fetch('https://your-heroku-api-url/calculate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          num1: parseFloat(num1),
+          num2: parseFloat(num2),
+          operation: operation,
+        }),
+      });
 
       const data = await response.json();
       if (response.ok) {
-        setResult(data.result); // Update with the result from the API
+        setResult(data.result);
         setError('');
       } else {
         setError(data.error || 'Error performing calculation');
