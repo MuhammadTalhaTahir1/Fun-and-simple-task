@@ -7,6 +7,7 @@ import {
   Alert,
   Text,
   PermissionsAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -54,15 +55,19 @@ const requestStoragePermission = async () => {
 const UploadPicture = () => {
   const [imageUri, setImageUri] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const fileName = 'your_image_file_name.jpg'; // Use a consistent file name
 
   useEffect(() => {
+    console.log('useeffect running of picture upload ');
     const fetchImage = async () => {
-      const fileName = 'your_image_file_name.jpg'; // Use a consistent file name
       try {
         const url = await storage().ref(fileName).getDownloadURL();
         setImageUri(url);
       } catch (error) {
-        console.log('Error fetching image: ', error);
+        // If the image is not found, we can ignore the error
+        if (error.code !== 'storage/object-not-found') {
+          console.log('Error fetching image: ', error);
+        }
       }
     };
 
@@ -71,22 +76,23 @@ const UploadPicture = () => {
 
   // Function to upload image to Firebase Storage
   const uploadImage = async uri => {
-    const fileName = uri.substring(uri.lastIndexOf('/') + 1);
     const reference = storage().ref(fileName);
     setUploading(true);
 
     try {
-      // Delete the old image if it exists
-      await storage()
-        .ref(fileName)
-        .delete()
-        .catch(error => {
-          if (error.code !== 'storage/object-not-found') {
-            console.log('Error deleting previous image: ', error);
-          }
-        });
+      // Check if the image already exists
+      await reference.getDownloadURL();
+      // If we reach here, it means the image exists, so we delete it
+      await reference.delete();
+    } catch (error) {
+      // If the error is 'object-not-found', it means the image does not exist
+      if (error.code !== 'storage/object-not-found') {
+        console.log('Error deleting previous image: ', error);
+      }
+    }
 
-      // Upload the new image
+    // Now upload the new image
+    try {
       await reference.putFile(uri);
       const url = await reference.getDownloadURL();
       Alert.alert('Success', 'Image uploaded successfully!', [{text: 'OK'}]);
@@ -149,9 +155,19 @@ const UploadPicture = () => {
 
   return (
     <View style={styles.container}>
-      <Button title="Select from Gallery" onPress={selectImageFromGallery} />
-      <Button title="Take Photo" onPress={takePhotoWithCamera} />
+      <View style={{marginBottom: 10}}>
+        <Button
+          title={imageUri ? 'Replace using Gallery' : 'Select from Gallery'}
+          onPress={selectImageFromGallery}
+        />
+      </View>
 
+      <Button
+        title={imageUri ? 'Replace via Camera' : 'Take Photo'}
+        onPress={takePhotoWithCamera}
+      />
+
+      {uploading && <ActivityIndicator size="medium" color="#1F41BB" />}
       {uploading && <Text>Uploading...</Text>}
 
       {imageUri && (
