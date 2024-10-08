@@ -5,10 +5,10 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.post('/calculate', (req, res) => {
-  const {num1, num2, operation} = req.body;
+  const { num1, num2, operation } = req.body;
 
   if (isNaN(num1) || isNaN(num2)) {
-    return res.status(400).json({error: 'Invalid input'});
+    return res.status(400).json({ error: 'Invalid input' });
   }
 
   let result;
@@ -23,10 +23,10 @@ app.post('/calculate', (req, res) => {
       result = num1 * num2;
       break;
     default:
-      return res.status(400).json({error: 'Invalid operation'});
+      return res.status(400).json({ error: 'Invalid operation' });
   }
 
-  res.json({result});
+  res.json({ result });
 });
 
 app.listen(port, () => {
