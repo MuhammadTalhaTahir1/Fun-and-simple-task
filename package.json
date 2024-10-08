@@ -2,6 +2,9 @@
   "name": "FlexiTask",
   "version": "0.0.1",
   "private": true,
+  "workspaces": [
+    "calculator-api"
+  ],
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
